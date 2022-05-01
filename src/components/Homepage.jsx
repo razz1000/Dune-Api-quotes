@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 import DuneTable from "./DuneTable"
+import {Spinner} from "react-bootstrap"
+import Loading from "./Loading"
 
 
 let Homepage = () => { 
 
     let [duneQuotes, setDuneQuotes] = useState([])
-
+    let [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         fetchDuneQuotes()
+        setIsLoading(true)
     }, [])
 
 
@@ -19,6 +22,7 @@ let Homepage = () => {
             console.log(parsedBody)
             if(response.ok) {
                 setDuneQuotes(parsedBody)
+                setIsLoading(false)
             }
                 
         } catch (error) {
@@ -31,8 +35,10 @@ let Homepage = () => {
 
     return (
         <div>
+              
             <h1>List of quotes from the movie Dune</h1>
-            <DuneTable duneQuotes={duneQuotes}/>
+            <DuneTable duneQuotes={duneQuotes}/> 
+            {isLoading && <Loading />}
         </div>
     )
 }
